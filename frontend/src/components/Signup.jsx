@@ -1,21 +1,39 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleSignup = () => {
-    console.log(name, email, password);
-  }
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    const auth = localStorage.getItem('user');
+    if(auth) navigate('/')
+  })
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    let result = await fetch("http://localhost:5000/signup", {
+      method: "post",
+      body: JSON.stringify({ name, email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    result = await result.json();
+    result ? navigate("/") : navigate("/signup");
+    localStorage.setItem("user", JSON.stringify(result));
+  };
+
   return (
-    <div className="py-8 flex items-center justify-center bg-neutral-100">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-neutral-100">
       <div className="w-full max-w-md bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold text-neutral-800 mb-6">
+        <h2 className="text-2xl font-bold text-neutral-800 text-center mb-6">
           Sign Up
         </h2>
-        <form className="text-left">
-          <div className="mb-4 ">
+        <form className="text-left" onSubmit={handleSignup}>
+          <div className="mb-4">
             <label
               htmlFor="username"
               className="block text-sm font-medium text-zinc-600 mb-2"
@@ -66,7 +84,6 @@ const Signup = () => {
           <button
             type="submit"
             className="w-full bg-neutral-800 text-white py-2 px-4 rounded-md hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2"
-            onClick={handleSignup}
           >
             Sign Up
           </button>
