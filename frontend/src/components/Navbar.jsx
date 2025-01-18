@@ -6,18 +6,25 @@ function Navbar() {
   const navigate = useNavigate();
   const logout = () =>{
     localStorage.clear();
-    navigate('/signup');
+    navigate('/login');
     window.location.reload();
   }
   return (
     <div>
-      <ul className='flex justify-around p-4 bg-zinc-100 hover:text-black text-neutral-700 cursor-pointer'>
-        <li><Link to="/">Products</Link></li>
-        <li><Link to="/add">Add Product</Link></li>
-        <li><Link to="/update">Update Products</Link></li>
-        <li><Link to="/profile">Profile</Link></li>
-        { auth ? <li><Link to="/logout" onClick={logout}>Logout</Link></li> : <li><Link to="/signup">Signup</Link></li>}
+      { auth ? 
+      <ul className='flex justify-around p-4 bg-zinc-100 text-neutral-700 cursor-pointer'>
+        <li className='hover:text-black'><Link to="/">Products</Link></li>
+        <li className='hover:text-black'><Link to="/add">Add Product</Link></li>
+        <li className='hover:text-black'><Link to="/update">Update Products</Link></li>
+        <li className='hover:text-black'><Link to="/profile">Profile</Link></li>
+        <li className='hover:text-black'><Link to="/logout" onClick={logout}>Logout ({JSON.parse(auth).result.username}) </Link></li>
       </ul>
+      :
+      <ul className='flex justify-end gap-8 py-4 px-8 bg-zinc-100 text-neutral-700 cursor-pointer'>
+        <li className='hover:text-black'><Link to="/login">Login</Link></li>
+        <li className='hover:text-black'><Link to="/signup">Signup</Link></li>
+      </ul>
+      }
     </div>
   )
 }

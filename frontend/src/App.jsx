@@ -4,24 +4,27 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer';
 import Signup from './components/Signup';
 import PrivateComponent from './components/PrivateComponent';
+import Login from './components/Login';
+import AddProduct from './components/AddProduct';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-neutral-100 min-h-screen">
       <BrowserRouter>
         <Navbar/>
         <Routes>
           <Route element={<PrivateComponent/>}>
             <Route path='/' element={<h1>Product listing</h1>}/>
-            <Route path='/add' element={<h1>Add Products</h1>}/>
+            <Route path='/add' element={<AddProduct/>}/>
             <Route path='/update' element={<h1>Update Products</h1>}/>
             <Route path='/logout' element={<h1>Logout</h1>}/>
             <Route path='/profile' element={<h1>User Profile</h1>}/>
           </Route>
           <Route path='/signup' element={<Signup/>}/> 
+          <Route path='/login' element={<Login/>}/>
         </Routes>
       </BrowserRouter>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }
