@@ -35,4 +35,9 @@ app.post('/add-product', async (req,res) =>{
   res.send(result)
 })
 
+app.get('/products', async (req,res)=>{
+  let products = await Product.find()
+  products.length>0 ? res.send(products): res.send("No Products Available")
+})
+
 app.listen(5000)
