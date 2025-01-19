@@ -5,7 +5,16 @@ const AddProduct = () => {
   const [price, setPrice] = useState();
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
-  const handleSubmit = async (e)=>{
+  const [error, setError] = useState(false);
+
+  const addProduct = async (e)=>{
+
+    if(!pname || !price || !category || !brand){
+      e.preventDefault();
+      setError(true);
+      return false;
+    }
+
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"))
     let result =await fetch('http://localhost:5000/add-product', {
@@ -21,12 +30,12 @@ const AddProduct = () => {
   }
 
   return (
-    <div className="flex items-center justify-center py-10 bg-gray-100 p-4">
+    <div className="flex justify-center py-10 bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Add a New Product
         </h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={addProduct}>
           <div>
             <input
               type="text"
@@ -35,6 +44,7 @@ const AddProduct = () => {
               onChange={(e)=>{setPname(e.target.value)}}
               value={pname}
             />
+            { error && !pname && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter a name of product</span>}
           </div>
           <div>
             <input
@@ -44,6 +54,7 @@ const AddProduct = () => {
               onChange={(e)=>{setPrice(e.target.value)}}
               value={price}
             />
+            { error && !price && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter price of product </span>}
           </div>
           <div>
             <input
@@ -54,6 +65,7 @@ const AddProduct = () => {
               value={category}
             />
           </div>
+          { error && !pname && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter category of product</span>}
           <div>
             <input
               type="text"
@@ -62,6 +74,7 @@ const AddProduct = () => {
               onChange={(e)=>{setBrand(e.target.value)}}
               value={brand}
             />
+            { error && !pname && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter brand of product</span>}
           </div>
           <div>
             <button
