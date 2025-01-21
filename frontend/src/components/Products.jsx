@@ -21,7 +21,7 @@ const Products = () => {
       <div className="overflow-x-auto">
         <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-gray-800 text-white text-left">
+            <tr className="bg-gray-800 text-white text-center">
               <th className="p-4 text-sm font-semibold">Sno.</th>
               <th className="p-4 text-sm font-semibold">Name</th>
               <th className="p-4 text-sm font-semibold">Price</th>
@@ -34,7 +34,7 @@ const Products = () => {
               products.map((item, index) => (
                 <tr
                   key={index}
-                  className={`text-gray-700 ${
+                  className={`text-gray-700 hover:bg-slate-100 ${
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   }`}
                 >

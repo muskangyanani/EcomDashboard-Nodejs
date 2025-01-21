@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <div>
       { auth ? 
-      <ul className='flex justify-around p-4 bg-zinc-100 text-neutral-700 cursor-pointer'>
+      <ul className='flex justify-around p-4 bg-zinc-100 text-neutral-700 cursor-pointer text-lg'>
         <li className='hover:text-black'><Link to="/">Products</Link></li>
         <li className='hover:text-black'><Link to="/add">Add Product</Link></li>
         <li className='hover:text-black'><Link to="/profile">Manage profile</Link></li>

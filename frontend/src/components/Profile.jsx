@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom'
 
 const Profile = () => {
   const user = localStorage.getItem('user');
@@ -45,7 +46,7 @@ const Profile = () => {
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">Your Products</h3>
         <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-gray-800 text-white text-left">
+            <tr className="bg-gray-800 text-white text-center">
               <th className="p-4 text-sm font-semibold">Sno.</th>
               <th className="p-4 text-sm font-semibold">Name</th>
               <th className="p-4 text-sm font-semibold">Price</th>
@@ -69,11 +70,12 @@ const Profile = () => {
                   <td className="p-4 border-t">{item.category}</td>
                   <td className="p-4 border-t">{item.brand}</td>
                   <td className="p-4 border-t">
-                    <button
+                    <Link
                       className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600"
+                      to={`/update/${item._id}`} 
                     >
                       Update
-                    </button>
+                    </Link>
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                       onClick={()=>deleteProduct(item._id)}
