@@ -40,6 +40,13 @@ app.get('/products', async (req,res)=>{
   products.length>0 ? res.send(products): res.send("No Products Available")
 })
 
+app.get('/products/:id', async(req,res)=>{
+  let userId = req.params.id
+  let products = await Product.find({userId})
+  console.log(userId, products)
+  products.length>0 ? res.send(products): res.send("No Products Available")
+})
+
 app.delete('/product/:id', async (req,res)=>{
   const result = await Product.deleteOne({_id: req.params.id})
   res.send(result)

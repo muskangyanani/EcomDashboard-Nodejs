@@ -2,32 +2,40 @@ import React, { useState } from 'react';
 
 const AddProduct = () => {
   const [pname, setPname] = useState('');
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
   const [error, setError] = useState(false);
 
-  const addProduct = async (e)=>{
+  const addProduct = async (e) => {
+    e.preventDefault();
 
-    if(!pname || !price || !category || !brand){
-      e.preventDefault();
+    if (!pname || !price || !category || !brand) {
       setError(true);
       return false;
     }
 
-    e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user"))
-    let result =await fetch('http://localhost:5000/add-product', {
-      method: 'post',
-      body: JSON.stringify({pname, price, category, brand, user: user._id}),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    result = await result.json();
-    console.log(result)
-    alert("Product added Succesfully")
-  }
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user?.result?._id;
+
+    const productData = { pname, price, category, brand, userId };
+
+    try {
+      let result = await fetch('http://localhost:5000/add-product', {
+        method: 'POST',
+        body: JSON.stringify(productData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      result = await result.json();
+      console.log(result);
+      alert('Product added successfully');
+    } catch (error) {
+      console.error('Error adding product:', error);
+      alert('Failed to add product');
+    }
+  };
 
   return (
     <div className="flex justify-center py-10 bg-gray-100 p-4">
@@ -41,40 +49,56 @@ const AddProduct = () => {
               type="text"
               placeholder="Enter name of product"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-              onChange={(e)=>{setPname(e.target.value)}}
+              onChange={(e) => setPname(e.target.value)}
               value={pname}
             />
-            { error && !pname && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter a name of product</span>}
+            {error && !pname && (
+              <span className="float-start text-sm text-red-500 px-2 pb-2">
+                * Enter the name of the product
+              </span>
+            )}
           </div>
           <div>
             <input
               type="number"
               placeholder="Enter price of product"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-              onChange={(e)=>{setPrice(e.target.value)}}
+              onChange={(e) => setPrice(e.target.value)}
               value={price}
             />
-            { error && !price && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter price of product </span>}
+            {error && !price && (
+              <span className="float-start text-sm text-red-500 px-2 pb-2">
+                * Enter the price of the product
+              </span>
+            )}
           </div>
           <div>
             <input
               type="text"
               placeholder="Enter category of product"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-              onChange={(e)=>{setCategory(e.target.value)}}
+              onChange={(e) => setCategory(e.target.value)}
               value={category}
             />
+            {error && !category && (
+              <span className="float-start text-sm text-red-500 px-2 pb-2">
+                * Enter the category of the product
+              </span>
+            )}
           </div>
-          { error && !pname && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter category of product</span>}
           <div>
             <input
               type="text"
               placeholder="Enter brand of product"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-              onChange={(e)=>{setBrand(e.target.value)}}
+              onChange={(e) => setBrand(e.target.value)}
               value={brand}
             />
-            { error && !pname && <span className='float-start text-sm text-red-500 px-2 pb-2'>* Enter brand of product</span>}
+            {error && !brand && (
+              <span className="float-start text-sm text-red-500 px-2 pb-2">
+                * Enter the brand of the product
+              </span>
+            )}
           </div>
           <div>
             <button
