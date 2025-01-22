@@ -31,6 +31,7 @@ const AddProduct = () => {
       result = await result.json();
       console.log(result);
       alert('Product added successfully');
+      window.location.href = "/"
     } catch (error) {
       console.error('Error adding product:', error);
       alert('Failed to add product');

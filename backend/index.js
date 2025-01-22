@@ -64,4 +64,16 @@ app.get('/product/:id', async(req,res)=>{
   res.send(product)
 })
 
+// search
+app.get('/search/:key', async (req,res)=>{
+  let result = await Product.find({
+    "$or" :[
+      {pname: {$regex:req.params.key}},
+      {category: {$regex:req.params.key}},
+      {brand: {$regex:req.params.key}}
+    ]
+  });
+  res.send(result)
+})
+
 app.listen(5000)

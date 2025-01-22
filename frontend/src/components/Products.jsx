@@ -13,11 +13,34 @@ const Products = () => {
     setProducts(result);
   };
 
+  const searchProduct = async (e) =>{
+    let key = e.target.value;
+    if(key){
+      let result = await fetch(`http://localhost:5000/search/${key}`);
+      result = await result.json();
+      if(result){
+        setProducts(result)
+      }
+    }else{
+      getProducts()
+    }
+  }
+
   return (
     <div className="bg-gray-100 p-6">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
         Available Products
       </h2>
+
+      <div className="flex flex-col md:flex-row items-center justify-center mb-6">
+        <input
+          type="text"
+          placeholder="Search for a product..."
+          className="w-full md:w-2/3 lg:w-1/2 p-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mb-4 md:mb-0"
+          onChange={searchProduct}
+        />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
