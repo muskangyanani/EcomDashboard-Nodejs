@@ -40,6 +40,7 @@ app.get('/products', async (req,res)=>{
   products.length>0 ? res.send(products): res.send("No Products Available")
 })
 
+// products by user id
 app.get('/products/:id', async(req,res)=>{
   let userId = req.params.id
   let products = await Product.find({userId})
@@ -50,6 +51,17 @@ app.get('/products/:id', async(req,res)=>{
 app.delete('/product/:id', async (req,res)=>{
   const result = await Product.deleteOne({_id: req.params.id})
   res.send(result)
+})
+
+app.put('/update-product/:id', async (req,res)=>{
+  const result = await Product.updateOne({_id: req.params.id}, req.body)
+  res.send(result)
+})
+
+// get product by product id
+app.get('/product/:id', async(req,res)=>{
+  let product = await Product.findOne({_id: req.params.id})
+  res.send(product)
 })
 
 app.listen(5000)
