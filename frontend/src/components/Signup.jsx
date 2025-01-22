@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Signup = () => {
     e.preventDefault();
     let result = await fetch("http://localhost:5000/signup", {
       method: "post",
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ username, email, password }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -24,10 +24,11 @@ const Signup = () => {
     result = await result.json();
     result ? navigate("/") : navigate("/signup");
     localStorage.setItem("user", JSON.stringify(result));
+    localStorage.setItem("auth", JSON.stringify(result.auth));
   };
 
   return (
-    <div className="py-8 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-neutral-100">
+    <div className="px-4 sm:px-6 lg:px-8 py-10 flex items-center justify-center bg-neutral-100">
       <div className="w-full max-w-md bg-white p-8 rounded-md shadow-md">
         <h2 className="text-2xl font-bold text-neutral-800 text-center mb-6">
           Sign Up
@@ -45,8 +46,8 @@ const Signup = () => {
               id="username"
               className="w-full px-4 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
               placeholder="Enter your username"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
             />
           </div>
           <div className="mb-4">

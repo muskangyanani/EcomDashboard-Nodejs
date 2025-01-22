@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom'
 
 const Profile = () => {
   const user = localStorage.getItem('user');
-  const userID = JSON.parse(user).result._id;
-  const username = JSON.parse(user).result.username;
-  const email = JSON.parse(user).result.email;
+  const userID = JSON.parse(user).user._id;
+  const username = JSON.parse(user).user.username;
+  const email = JSON.parse(user).user.email;
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

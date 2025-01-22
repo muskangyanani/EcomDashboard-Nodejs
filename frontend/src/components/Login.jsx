@@ -22,8 +22,9 @@ const Login = () => {
     })
     result = await result.json()
     console.log(result)
-    if(result){
-      localStorage.setItem('user', JSON.stringify({result}))
+    if(result.auth){
+      localStorage.setItem('user', JSON.stringify(result))
+      localStorage.setItem('token', JSON.stringify(result.auth))
       navigate('/')
     }else{
       alert("User Does not exist!")
@@ -32,7 +33,7 @@ const Login = () => {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center bg-neutral-100">
+    <div className="px-4 sm:px-6 lg:px-8 py-10 flex items-center justify-center bg-neutral-100">
       <div className="w-full max-w-md bg-white p-8 rounded-md shadow-md">
         <h2 className="text-2xl font-bold text-neutral-800 text-center mb-6">
           Login

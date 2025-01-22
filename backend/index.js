@@ -3,6 +3,8 @@ require('./db/config');
 const User = require('./db/User');
 const cors = require('cors');
 const Product = require('./db/products');
+const jwt = require('jsonwebtoken');
+const jwtKey = 'ecomm'
 const app = express();
 
 app.use(express.json());
@@ -13,14 +15,20 @@ app.post('/signup', async (req, res) => {
   let result = await user.save();
   result = result.toObject();
   delete result.password;
-  res.send(result);
+  jwt.sign({result}, jwtKey , {expiresIn:"2h"} , (err, token)=>{
+    err?res.send("Something Went wrong"):
+    res.send({result, auth: token})
+  })
 })
 
 app.post('/login', async (req,res)=>{
   if(req.body.password && req.body.username){
-    let user = await User.findOne(req.body).select('-password')
-    if(user){
-      res.send(user)
+    let result = await User.findOne(req.body).select('-password')
+    if(result){
+      jwt.sign({result}, jwtKey , {expiresIn:"2h"} , (err, token)=>{
+        err?res.send("Something Went wrong"):
+        res.send({result, auth: token})
+      })
     }else{
       res.send({result: "No user found!!"})
     }
