@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom'
 
 const Profile = () => {
   const user = localStorage.getItem('user');
-  const userID = JSON.parse(user).user._id;
-  const username = JSON.parse(user).user.username;
-  const email = JSON.parse(user).user.email;
+  const userID = JSON.parse(user).result._id;
+  const username = JSON.parse(user).result.username;
+  const email = JSON.parse(user).result.email;
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -13,14 +13,21 @@ const Profile = () => {
   }, []);
 
   const getUserProducts = async () => {
-    let result = await fetch(`http://localhost:5000/products/${userID}`);
+    let result = await fetch(`http://localhost:5000/products/${userID}`,{
+      headers:{
+        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+      }
+    });
     result = await result.json();
     setProducts(result);
   };
 
   const deleteProduct =async (id) =>{
     let result = await fetch(`http://localhost:5000/product/${id}`, {
-      method: "Delete"
+      method: "Delete",
+      headers:{
+        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+      }
     })
     result = await result.json()
     if(result){

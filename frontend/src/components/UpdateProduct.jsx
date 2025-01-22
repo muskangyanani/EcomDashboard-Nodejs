@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const UpdateProduct = () => {
-  const [pname, setPname] = useState();
+  const [pname, setPname] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
@@ -12,7 +12,11 @@ const UpdateProduct = () => {
   },[])
 
   const getDetail = async () =>{
-    let result = await fetch(`http://localhost:5000/product/${productId}`);
+    let result = await fetch(`http://localhost:5000/product/${productId}`,{
+      headers:{
+        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+      }
+    });
     result = await result.json();
     setPname(result.pname)
     setPrice(result.price)
@@ -24,7 +28,9 @@ const UpdateProduct = () => {
     let result = await fetch(`http://localhost:5000/update-product/${productId}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+
       },
       body: JSON.stringify({pname, price, category, brand})
     })

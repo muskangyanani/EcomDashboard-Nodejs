@@ -37,43 +37,43 @@ app.post('/login', async (req,res)=>{
   }
 })
 
-app.post('/add-product', async (req,res) =>{
+app.post('/add-product',verifyToken, async (req,res) =>{
   let product = new Product(req.body);
   let result = await product.save();
   res.send(result)
 })
 
-app.get('/products', async (req,res)=>{
+app.get('/products',verifyToken, async (req,res)=>{
   let products = await Product.find()
   products.length>0 ? res.send(products): res.send("No Products Available")
 })
 
 // products by user id
-app.get('/products/:id', async(req,res)=>{
+app.get('/products/:id',verifyToken, async(req,res)=>{
   let userId = req.params.id
   let products = await Product.find({userId})
   console.log(userId, products)
   products.length>0 ? res.send(products): res.send("No Products Available")
 })
 
-app.delete('/product/:id', async (req,res)=>{
+app.delete('/product/:id',verifyToken, async (req,res)=>{
   const result = await Product.deleteOne({_id: req.params.id})
   res.send(result)
 })
 
-app.put('/update-product/:id', async (req,res)=>{
+app.put('/update-product/:id',verifyToken, async (req,res)=>{
   const result = await Product.updateOne({_id: req.params.id}, req.body)
   res.send(result)
 })
 
 // get product by product id
-app.get('/product/:id', async(req,res)=>{
+app.get('/product/:id',verifyToken, async(req,res)=>{
   let product = await Product.findOne({_id: req.params.id})
   res.send(product)
 })
 
 // search
-app.get('/search/:key', async (req,res)=>{
+app.get('/search/:key', verifyToken, async (req,res)=>{
   let result = await Product.find({
     "$or" :[
       {pname: {$regex:req.params.key}},
@@ -83,5 +83,18 @@ app.get('/search/:key', async (req,res)=>{
   });
   res.send(result)
 })
+
+function verifyToken(req, res, next){
+  let token = req.headers['authorization'];
+  if(token){
+    token = token.split(" ")[1];
+    console.log(token);
+    jwt.verify(token, jwtKey, (err, valid)=>{
+      err ? res.status(401).send({result: "Invalid Token"}) : next(); 
+    })
+  }else{
+    res.status(403).send({result: "Unauthrized Access, no token found!"})
+  }
+}
 
 app.listen(5000)

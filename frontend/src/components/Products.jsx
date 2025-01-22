@@ -10,7 +10,7 @@ const Products = () => {
   const getProducts = async () => {
     let result = await fetch("http://localhost:5000/products",{
       headers:{
-        authorization: JSON.parse(localStorage.getItem('token'))
+        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
       }
     });
     result = await result.json();
